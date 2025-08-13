@@ -1,0 +1,34 @@
+name: Build ImmortalWrt x86_64
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+      with:
+          # 指定要编译的版本
+          ref: master
+  
+    - name: Update feeds
+      run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+
+    - name: Load custom config
+      run: |
+        [ -f .config ] && echo "Using custom .config"
+        make defconfig
+
+    - name: Compile firmware
+      run: |
+        make -j$(nproc) V=s
+
+    - name: Upload firmware
+      uses: actions/upload-artifact@v4
+      with:
+        name: immortalwrt-x86_64
+        path: bin/targets/x86/64/*
