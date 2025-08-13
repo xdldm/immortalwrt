@@ -11,4 +11,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: immortalwrt-x86_64
-        path: bin/targets/x86/generic/*.tar.gz
+        path: /home/runner/work/immortalwrt/immortalwrt/bin/targets/x86/generic/*
