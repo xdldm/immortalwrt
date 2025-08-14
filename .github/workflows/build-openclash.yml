@@ -29,7 +29,7 @@ jobs:
         make package/luci-app-openclash/compile V=s
 
     - name: Upload OpenClash IPK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: openclash-ipk
         path: bin/packages/**/luci-app-openclash*.ipk
