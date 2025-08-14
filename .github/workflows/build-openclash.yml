@@ -23,7 +23,15 @@ jobs:
       run: |
         ./scripts/feeds update -a
         ./scripts/feeds install -a
-
+        
+    - name: Install host tools
+      run: |
+        make tools/install -j1
+    
+    - name: Clean Lua build
+      run: |
+        make package/utils/lua/clean
+    
     - name: Compile OpenClash
       run: |
         make package/luci-app-openclash/compile V=s
