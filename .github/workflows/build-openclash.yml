@@ -1,0 +1,35 @@
+name: Build OpenClash
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential libncurses5-dev gawk git gettext libssl-dev xsltproc wget unzip python3 python3-distutils
+
+    - name: Update feeds
+      run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+
+    - name: Compile OpenClash
+      run: |
+        make package/luci-app-openclash/compile V=s
+
+    - name: Upload OpenClash IPK
+      uses: actions/upload-artifact@v3
+      with:
+        name: openclash-ipk
+        path: bin/packages/**/luci-app-openclash*.ipk
